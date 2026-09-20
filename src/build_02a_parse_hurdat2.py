@@ -2,21 +2,6 @@
 Module 2a: HURDAT2 Parser
 ==========================
 Parses the raw NOAA HURDAT2 best-track file into structured storm records.
-
-FORMAT REFERENCE: NHC HURDAT2 format documentation
-(https://www.nhc.noaa.gov/data/hurdat/hurdat2-format-atlantic.pdf).
-Each storm has a header line (ID, name, number of track entries) followed by
-that many data lines. As of the 2021+ file revision, each data line has 21
-comma-separated fields: date, time, record identifier, status, lat, lon,
-max sustained wind (kt), min central pressure (mb), 12 wind-radii fields
-(34/50/64kt in each of 4 quadrants), and radius of maximum wind (RMW, nm).
-I confirmed this field count (21) directly against the uploaded file rather
-than assuming it, since HURDAT2's schema has changed over past revisions.
-
-WHY WE NEED THIS: everything downstream (event set, hazard, loss) starts from
-knowing where storms actually went historically. We don't build our synthetic
-catalog from scratch - we perturb real historical tracks, which is closer to
-how actual stochastic hurricane catalogs are built than a purely made-up model.
 """
 
 import re
