@@ -1,16 +1,3 @@
-"""
-run_all.py - Reproduces the entire Marsh Cat Analyst prep project from scratch.
-
-Usage (from project root, with venv activated and HURDAT2 already downloaded
-to data/raw/hurdat2.txt):
-    python run_all.py
-
-Each module is run as its own subprocess (matching how they were built and
-verified individually) rather than imported and called directly - this
-guarantees run_all.py exercises the EXACT same code path you'd get running
-each module by hand, with no import-order surprises.
-"""
-
 import subprocess
 import sys
 from pathlib import Path
