@@ -1,52 +1,5 @@
 """
 Module 2b: Florida Landfall Extraction + Stochastic Event Set
-================================================================
-Step 1: Find every historical storm that made landfall in/near our Florida
-        portfolio region (Miami-Dade / Broward / Palm Beach coastline) at
-        tropical storm strength or higher.
-Step 2: For each such historical landfall, derive the parameters a Holland
-        wind field needs: landfall position, central pressure, max wind,
-        forward speed, heading, and radius of maximum wind (RMW).
-Step 3: Generate a stochastic event set by perturbing each historical landfall
-        multiple times - this is the standard concept behind every commercial
-        cat model's "event set": real storms are perturbed to create a much
-        larger population of physically plausible events than actually
-        occurred, because 175 years of history isn't enough samples to
-        characterize rare tail events (e.g., a true 1-in-500-year storm).
-
-IMPORTANT - SOURCING AND UNCERTAINTY DISCLOSURE (read before quoting these
-numbers in an interview):
-
-1. PERTURBATION MAGNITUDES (±100km landfall, ±10mb pressure, ±20% speed):
-   These are ILLUSTRATIVE magnitudes, not values I can trace to one specific
-   validated source. The *concept* of perturbing historical tracks to build
-   a stochastic catalog is well-established (see e.g. Vickery, Skerlj &
-   Twisdale, "Simulation of Hurricane Risk in the U.S. Using Empirical Track
-   Model," ASCE Journal of Structural Engineering, 2000; Emanuel et al.'s
-   statistical-deterministic track model, 2006). But the exact perturbation
-   ranges real commercial models use are proprietary. If asked for the exact
-   number's provenance, the honest answer is: "This is a reasonable
-   illustrative range reflecting the order of magnitude discussed in track-
-   perturbation literature - I did not derive it from a specific validated
-   calibration, and a real model builder would calibrate this against
-   observed inter-annual track variability."
-
-2. PRESSURE-WIND RELATIONSHIP (used to estimate missing central pressure):
-   HURDAT2 records max wind speed for essentially every entry, but central
-   pressure is frequently missing (-999) for storms before ~1979 (pre-
-   aircraft/satellite reconnaissance era). Where pressure is missing, we
-   estimate it using an Atkinson & Holliday-style empirical wind-pressure
-   relationship of the general form Vmax = a*(1013-Pc)^b. I am NOT fully
-   certain the exact coefficients (a=6.7, b=0.644) I've used below are the
-   precise published Atlantic-basin values from a specific paper - these
-   coefficients are commonly seen in tropical cyclone literature but vary
-   by basin and by author (Atkinson & Holliday 1977 was for the Western
-   North Pacific). You should verify the exact coefficient against a
-   specific cited source (Atkinson & Holliday 1977; Knaff & Zehr 2007) before
-   presenting this as a rigorously sourced value in an interview. State
-   plainly if asked: "I used an illustrative wind-pressure relationship of
-   the standard functional form; I did not verify the exact published
-   coefficient for the Atlantic basin specifically."
 """
 
 import sqlite3
