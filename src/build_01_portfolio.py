@@ -3,29 +3,6 @@ Module 1: Synthetic Exposure Portfolio Generator
 ==================================================
 Generates a synthetic residential property portfolio across Miami-Dade, Broward,
 and Palm Beach counties (FL) and loads it into the SQLite exposure database.
-
-WHY THIS EXISTS:
-Real cat modeling starts from a client's Statement of Values (SOV) - a spreadsheet
-of every insured location, its construction, value, and coverage. We don't have
-access to a real SOV (they're confidential/proprietary), so we synthesize one that
-is *structurally realistic* even though the specific numbers are made up.
-
-IMPORTANT HONESTY NOTE:
-The county boundaries below are approximate bounding boxes based on general
-geography, not pulled from an authoritative source. For a production version,
-you'd clip against real US Census TIGER/Line shapefiles (listed in project stack)
-to only place points within actual land parcels. I'm flagging this explicitly:
-this is a simplification for the synthetic dataset, and you should say so if asked.
-
-The construction-class categories (Wood Frame / Masonry / Manufactured Home) follow
-the building-type taxonomy used in FEMA's HAZUS Hurricane Model Technical Manual,
-which defines vulnerability by construction material, roof shape, and other
-attributes. The *proportions* I assign (e.g., 55% masonry) are illustrative
-assumptions reflecting general knowledge that masonry construction is dominant in
-South Florida residential stock (a legacy of building-code changes after Hurricane
-Andrew, 1992) - NOT pulled from an actual FL Office of Insurance Regulation dataset.
-If asked in an interview, say plainly: "the proportions are my assumption based on
-general knowledge of FL construction practice, not a cited statistic."
 """
 
 import sqlite3
@@ -80,14 +57,6 @@ def sample_coords(counties):
 
 
 def sample_tiv(construction_classes, year_built):
-    """
-    TIV (Total Insured Value) synthesized from a lognormal distribution, which is
-    the standard way to model property values (right-skewed: many modest homes,
-    a smaller number of high-value properties). Base median scaled up slightly
-    for masonry (generally sturdier/larger homes) and newer construction.
-    This is a MODELING CHOICE for realistic distribution shape, not a cited
-    real-estate statistic - be upfront about that if asked.
-    """
     base_median = np.where(construction_classes == "Masonry", 380_000,
                    np.where(construction_classes == "Wood Frame", 320_000, 150_000))
     age_factor = 1 + (year_built - 1970) / 1000  # newer homes worth slightly more
